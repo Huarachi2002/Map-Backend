@@ -1,0 +1,245 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Usuario {
+  id              String @db.Uuid @unique @id @default(uuid())
+  nombre          String @db.VarChar(40) 
+  correo          String @db.VarChar(50)
+  constrasena     String @db.Text 
+  estado          Boolean @default(true)
+  
+  
+
+  cliente        Cliente?
+  empleado        Empleado?
+
+  createdAt       DateTime @db.Timestamp() @default(now()) 
+  updatedAt       DateTime @db.Timestamp() @default(now()) @updatedAt
+}
+
+model Cliente{
+  id         String @db.Uuid @unique @id @default(uuid())
+  usuario        Usuario   @relation(fields: [id], references: [id])
+  wallet_address  String @db.VarChar(100) @unique
+
+  registros       Registro[]
+  notificaciones  Notificacion[]
+  tarjetas        Tarjeta[]
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
+}
+
+model Registro {
+  id            String @db.Uuid @unique @id @default(uuid())
+  id_cliente     String @db.Uuid
+  cliente        Cliente   @relation(fields: [id_cliente], references: [id])
+  accion      String @db.VarChar(50)
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
+}
+
+model Notificacion {
+  id          String @db.Uuid @unique @id @default(uuid())
+  id_cliente     String @db.Uuid
+  cliente        Cliente   @relation(fields: [id_cliente], references: [id])
+  titulo      String @db.Text
+  mensaje     Boolean @default(false)
+  tipo        String @db.VarChar(50)
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
+}
+
+model Tarjeta {
+  id          String @db.Uuid @unique @id @default(uuid())
+  id_cliente     String @db.Uuid
+  cliente        Cliente   @relation(fields: [id_cliente], references: [id])
+  tipo_tarjeta String @db.VarChar(50)
+  nfc_id      String? @db.VarChar(50)
+  saldo_actual Float @default(0)
+  estado      Boolean @default(true)
+
+  movimientos  Movimiento[]
+  pagos        Pago[]
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
+}
+
+model Movimiento {
+  id        String @db.Uuid @unique @id @default(uuid())
+  id_tarjeta     String @db.Uuid
+  tarjeta        Tarjeta   @relation(fields: [id_tarjeta], references: [id])
+  monto_cripto Float @default(0)
+  monto_convertido Float @default(0)
+  tasa_conversion Float @default(0)
+
+  TransaccionBlockchain TransaccionBlockchain[]
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt 
+}
+
+model Pago {
+  id          String @db.Uuid @unique @id @default(uuid())
+  id_tarjeta     String @db.Uuid
+  tarjeta        Tarjeta   @relation(fields: [id_tarjeta], references: [id])
+  monto_pagado Float @default(0)
+  modo_pago   String @db.VarChar(50)
+  estado      Boolean @default(true)
+  latitud     Float @default(0)
+  longitud    Float @default(0)
+
+  id_micro String @db.Uuid
+  micro     Micro   @relation(fields: [id_micro], references: [id])
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt 
+}
+
+model EntidadOperadora {
+  id          String @db.Uuid @unique @id @default(uuid())
+  nombre      String @db.VarChar(50)
+  tipo       String @db.VarChar(50)
+  direccion   String @db.VarChar(100)
+  correo_contacto String @db.VarChar(50)
+  wallet_address String @db.VarChar(100) @unique
+  saldo_ingresos Float @default(0)
+  estado      Boolean @default(true)
+
+  entidad_pagos   EntidadPago[]
+  empleados       Empleado[]
+  retiros_entidad RetiroEntidad[]
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
+}
+
+model Empleado{
+  id         String @db.Uuid @unique @id @default(uuid())
+  usuario        Usuario   @relation(fields: [id], references: [id])
+  id_entidad  String @db.Uuid()
+  entidad        EntidadOperadora   @relation(fields: [id_entidad], references: [id])
+
+  micros       Micro[]
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
+}
+
+model Micro {
+  id          String @db.Uuid @unique @id @default(uuid())
+  id_empleado     String @db.Uuid
+  empleado        Empleado   @relation(fields: [id_empleado], references: [id])
+  id_ruta    String @db.Uuid
+  ruta        Ruta   @relation(fields: [id_ruta], references: [id])
+  placa       String @db.VarChar(50)
+  color       String @db.VarChar(50)
+  estado      Boolean @default(true)
+
+  pagos        Pago[]
+  tracking     Tracking[]
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt 
+}
+
+model Tracking {
+  id          String @db.Uuid @unique @id @default(uuid())
+  id_micro    String @db.Uuid
+  micro       Micro   @relation(fields: [id_micro], references: [id])
+  latitud     Float @default(0)
+  longitud    Float @default(0)
+  altura      Float @default(0)
+  precision   Float @default(0)
+  bateria     Float @default(0)
+  imei        String @db.VarChar(50)
+  fuente      String @db.VarChar(50)
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
+}
+
+model EntidadPago{
+  id          String @db.Uuid @unique @id @default(uuid())
+  id_entidad  String @db.Uuid
+  entidad     EntidadOperadora    @relation(fields: [id_entidad], references: [id])
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
+}
+
+model Parada {
+  id          String @db.Uuid @unique @id @default(uuid())
+  id_ruta     String @db.Uuid
+  ruta        Ruta   @relation(fields: [id_ruta], references: [id])
+  nombre      String @db.VarChar(50)
+  latitud     Float @default(0)
+  longitud    Float @default(0)
+  tiempo Float @default(0)
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
+}
+
+model Ruta{
+  id          String @db.Uuid @unique @id @default(uuid())
+  nombre      String @db.VarChar(50)
+  origen     String @db.VarChar(50)
+  destino    String @db.VarChar(50)
+  vertices   String @db.Text
+
+  paradas     Parada[]
+  micros      Micro[]
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
+}
+
+model RetiroEntidad {
+  id                  String @db.Uuid @unique @id @default(uuid())
+  id_entidad          String @db.Uuid
+  entidad             EntidadOperadora    @relation(fields: [id_entidad], references: [id])
+  monto_cripto        Float @default(0)
+  monto_convertido    Float @default(0)
+  tasa_conversion     Float @default(0)
+
+  transaccion_blockchain TransaccionBlockchain[]
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
+}
+
+model TransaccionBlockchain {
+  id          String @db.Uuid @unique @id @default(uuid())
+  id_movimiento String? @db.Uuid
+  movimiento   Movimiento?   @relation(fields: [id_movimiento], references: [id])
+  id_retiro_entidad String? @db.Uuid
+  retiro_entidad RetiroEntidad?   @relation(fields: [id_retiro_entidad], references: [id])
+  tipo_transaccion String @db.VarChar(50)
+  tx_hash String @db.Text
+  cripto_usada String @db.VarChar(30)
+  monto_original Float @default(0)
+  gas_fee Float @default(0)
+  direccion_origen String @db.VarChar(150)
+  direccion_destino String @db.VarChar(150)
+
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
+}
