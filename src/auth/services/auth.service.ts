@@ -34,22 +34,25 @@ export class AuthService {
     let empleadoInfo = null;
     
     // Obtener información adicional según el tipo de usuario
-    if(findUser.tipo === 'cliente') {
+    if(findUser.tipo === 'CLIENTE') {
       clienteInfo = await this.prismaService.cliente.findUnique({
         where: { id: findUser.id },
         include: { usuario: true }
       });
-    } else if(findUser.tipo === 'empleado') {
+    } else if(findUser.tipo === 'EMPLEADO') {
       empleadoInfo = await this.prismaService.empleado.findUnique({
         where: { id: findUser.id },
-        include: { usuario: true, entidad: true }
+        include: { 
+          entidad: true,
+          micros: true 
+        }
       });
     }
 
     return {
       user: findUser,
-      clienteInfo,
-      empleadoInfo,
+      cliente: clienteInfo,
+      empleado: empleadoInfo,
       token: this.signJwt({
         payload: {
           userId: findUser.id,

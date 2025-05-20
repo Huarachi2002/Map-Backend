@@ -22,4 +22,7 @@ export class MicroCreateDto {
     @IsOptional()
     id_ruta?: string;   
 
+    @IsString()
+    @IsOptional()
+    id_empleado?: string;
 }

@@ -8,9 +8,11 @@ import { AuthModule } from './auth/auth.module';
 import { EntidadOperadoraModule } from './entidad-operadora/entidad-operadora.module';
 import { RutaModule } from './ruta/ruta.module';
 import { MicroModule } from './micro/micro.module';
+import { SocketModule } from './socket/socket.module';
 
 @Module({  imports: [
     PrismaModule, 
+    SocketModule,
     UserModule,
     ConfigModule.forRoot({
       isGlobal: true,

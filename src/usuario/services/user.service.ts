@@ -96,6 +96,15 @@ export class UserService {
         }
       })
     }else{
+      const existEntidad = await this.prismaService.entidadOperadora.findUnique({
+        where:{
+          id: usuarioCreateDto.id_entidad
+        }
+      });
+
+      if(!existEntidad)
+        throw new BadRequestException(`La entidad ${usuarioCreateDto.id_entidad} no existe`);
+
       createUser = await this.prismaService.usuario.create({
         data: {
           nombre: usuarioCreateDto.nombre,

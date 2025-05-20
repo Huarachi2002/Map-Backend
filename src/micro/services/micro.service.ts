@@ -52,6 +52,7 @@ export class MicroService {
         color: microDto.color,
         id_entidad: microDto.id_entidad,
         id_ruta: microDto.id_ruta ?? null,
+        id_empleado: microDto.id_empleado ?? null,
       }
     });
     
@@ -98,6 +99,7 @@ export class MicroService {
         estado: microDto.estado,
         color: microDto.color,
         id_ruta: microDto.id_ruta ?? null,
+        id_empleado: microDto.id_empleado ?? null,
       }
     });
     

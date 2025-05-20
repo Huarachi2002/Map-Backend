@@ -22,7 +22,6 @@ model Usuario {
   estado          Boolean @default(true)
   tipo            String @db.VarChar(50) // cliente, empleado, admin
   
-
   cliente        Cliente?
   empleado        Empleado?
 
@@ -139,6 +138,8 @@ model Empleado{
   id_entidad  String @db.Uuid()
   entidad        EntidadOperadora   @relation(fields: [id_entidad], references: [id])
 
+  micros      Micro[]
+
   createdAt   DateTime @db.Timestamp() @default(now()) 
   updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
 }
@@ -149,6 +150,8 @@ model Micro {
   entidad_operadora        EntidadOperadora   @relation(fields: [id_entidad], references: [id])
   id_ruta    String? @db.Uuid
   ruta        Ruta?   @relation(fields: [id_ruta], references: [id])
+  id_empleado String? @db.Uuid
+  empleado     Empleado?   @relation(fields: [id_empleado], references: [id])
   placa       String @db.VarChar(50)
   color       String @db.VarChar(50)
   estado      Boolean @default(true)
