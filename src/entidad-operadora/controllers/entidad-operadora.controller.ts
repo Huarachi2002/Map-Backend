@@ -2,12 +2,10 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPi
 import { EntidadOperadoraService } from '../services';
 import { QueryCommonDto } from 'src/common/dto';
 import { IApiResponse } from 'src/common/interface';
-import { AuthTokenGuard } from 'src/auth/guard';
 import { EntidadOperadoraCreateDto, EntidadOperadoraUpdateDto } from '../dto';
 import { IResponseEntidadOperadora } from '../interface';
 
 @Controller('entidad-operadora')
-@UseGuards(AuthTokenGuard)
 export class EntidadOperadoraController {
   constructor(
     private readonly entidadOperadoraService: EntidadOperadoraService,

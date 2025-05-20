@@ -75,15 +75,46 @@ export class UserService {
   public async createUser(usuarioCreateDto: UserCreateDto): Promise<Usuario>{
     const findUser = await this.findUserEmail(usuarioCreateDto.correo);
     if(findUser)
-      throw new BadRequestException(`El nombre ya se encuentra en uso`);
-    const createUser = await this.prismaService.usuario.create({
-      data: {
-        nombre: usuarioCreateDto.nombre,
-        correo: usuarioCreateDto.correo,
-        tipo: usuarioCreateDto.tipo,
-        contrasena: this.hashPass(usuarioCreateDto.contrasena),
-      }
-    })
+      throw new BadRequestException(`El correo ya se encuentra en uso`);
+
+    let createUser = null;
+    if(usuarioCreateDto.tipo === 'CLIENTE'){
+      createUser = await this.prismaService.usuario.create({
+        data: {
+          nombre: usuarioCreateDto.nombre,
+          correo: usuarioCreateDto.correo,
+          tipo: usuarioCreateDto.tipo,
+          contrasena: this.hashPass(usuarioCreateDto.contrasena),
+          cliente: {
+            create: {
+              wallet_address: usuarioCreateDto.wallet_address
+            }
+          }
+        },
+        include:{
+          cliente: true,
+        }
+      })
+    }else{
+      createUser = await this.prismaService.usuario.create({
+        data: {
+          nombre: usuarioCreateDto.nombre,
+          correo: usuarioCreateDto.correo,
+          tipo: usuarioCreateDto.tipo,
+          contrasena: this.hashPass(usuarioCreateDto.contrasena),
+          empleado: {
+            create: {
+              id_entidad: usuarioCreateDto.id_entidad,
+              tipo: usuarioCreateDto.tipo_empleado,
+            }
+          }
+        },
+        include:{
+          empleado: true,
+        }
+      })
+
+    }
     return createUser;
   }
 

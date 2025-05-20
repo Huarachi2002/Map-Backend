@@ -18,9 +18,9 @@ model Usuario {
   id              String @db.Uuid @unique @id @default(uuid())
   nombre          String @db.VarChar(40) 
   correo          String @db.VarChar(50)
-  constrasena     String @db.Text 
+  contrasena     String @db.Text 
   estado          Boolean @default(true)
-  
+  tipo            String @db.VarChar(50) // cliente, empleado, admin
   
 
   cliente        Cliente?
@@ -125,6 +125,8 @@ model EntidadOperadora {
   entidad_pagos   EntidadPago[]
   empleados       Empleado[]
   retiros_entidad RetiroEntidad[]
+  micros          Micro[]
+  rutas           Ruta[]
 
   createdAt   DateTime @db.Timestamp() @default(now()) 
   updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
@@ -133,10 +135,9 @@ model EntidadOperadora {
 model Empleado{
   id         String @db.Uuid @unique @id @default(uuid())
   usuario        Usuario   @relation(fields: [id], references: [id])
+  tipo       String @db.VarChar(50) // CHOFER, ADMIN
   id_entidad  String @db.Uuid()
   entidad        EntidadOperadora   @relation(fields: [id_entidad], references: [id])
-
-  micros       Micro[]
 
   createdAt   DateTime @db.Timestamp() @default(now()) 
   updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
@@ -144,10 +145,10 @@ model Empleado{
 
 model Micro {
   id          String @db.Uuid @unique @id @default(uuid())
-  id_empleado     String @db.Uuid
-  empleado        Empleado   @relation(fields: [id_empleado], references: [id])
-  id_ruta    String @db.Uuid
-  ruta        Ruta   @relation(fields: [id_ruta], references: [id])
+  id_entidad     String @db.Uuid
+  entidad_operadora        EntidadOperadora   @relation(fields: [id_entidad], references: [id])
+  id_ruta    String? @db.Uuid
+  ruta        Ruta?   @relation(fields: [id_ruta], references: [id])
   placa       String @db.VarChar(50)
   color       String @db.VarChar(50)
   estado      Boolean @default(true)
@@ -199,10 +200,17 @@ model Parada {
 
 model Ruta{
   id          String @db.Uuid @unique @id @default(uuid())
+  id_entidad  String @db.Uuid
+  entidad     EntidadOperadora    @relation(fields: [id_entidad], references: [id])
   nombre      String @db.VarChar(50)
-  origen     String @db.VarChar(50)
-  destino    String @db.VarChar(50)
+  descripcion String @db.Text
+  origenLat     String @db.VarChar(50)
+  origenLong     String @db.VarChar(50)
+  destinoLat    String @db.VarChar(50)
+  destinoLong    String @db.VarChar(50)
   vertices   String @db.Text
+  distancia  Float @default(0)
+  tiempo     Float @default(0)
 
   paradas     Parada[]
   micros      Micro[]

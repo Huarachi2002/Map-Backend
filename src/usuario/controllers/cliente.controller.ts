@@ -51,13 +51,13 @@ export class ClienteController {  constructor(
     };
   }
 
-  @Get('wallet/:wallet_address')
+  @Get('wallet/:id_cliente')
   @HttpCode(HttpStatus.OK)
   public async findByWalletAddress(
-    @Param('wallet_address') wallet_address: string
+    @Param('id_cliente') id_cliente: string
   ): Promise<IApiResponse<IResponseCliente>> {
     const statusCode = HttpStatus.OK;
-    const cliente = await this.clienteService.findByWalletAddress(wallet_address);
+    const cliente = await this.clienteService.findByWalletAddress(id_cliente);
 
     return {
       statusCode,
@@ -67,6 +67,7 @@ export class ClienteController {  constructor(
       }
     };
   }
+
   @Post()
   @HttpCode(HttpStatus.CREATED)
   public async createCliente(
@@ -79,7 +80,7 @@ export class ClienteController {  constructor(
       nombre: clienteCreateDto.nombre,
       correo: clienteCreateDto.correo,
       contrasena: clienteCreateDto.contrasena,
-      tipo: 'cliente'
+      tipo: 'CLIENTE'
     });
     
     // Luego creamos el cliente con el ID del usuario

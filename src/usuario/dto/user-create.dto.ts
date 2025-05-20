@@ -1,4 +1,4 @@
-import { IsEmail, IsString, MinLength } from "class-validator";
+import { IsEmail, IsOptional, IsString, MinLength } from "class-validator";
 
 
 
@@ -18,4 +18,16 @@ export class UserCreateDto {
 
   @IsString()
   tipo: string;
+
+  @IsString()
+  @IsOptional()
+  wallet_address?: string;
+
+  @IsString()
+  @IsOptional()
+  id_entidad?: string;
+
+  @IsString()
+  @IsOptional()
+  tipo_empleado?: string;
 }

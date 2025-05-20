@@ -66,10 +66,10 @@ export class ClienteService {
     
     return cliente;
   }
-  public async findByWalletAddress(wallet_address: string): Promise<Cliente & { usuario: any }> {
+  public async findByWalletAddress(id: string): Promise<Cliente & { usuario: any }> {
     const cliente = await this.prismaService.cliente.findUnique({
       where: {
-        wallet_address
+        id
       },
       include: {
         usuario: true
@@ -77,7 +77,7 @@ export class ClienteService {
     });
     
     if (!cliente) {
-      throw new NotFoundException(`Cliente con wallet ${wallet_address} no encontrado`);
+      throw new NotFoundException(`Cliente con Id ${id} no encontrado`);
     }
     
     return cliente;

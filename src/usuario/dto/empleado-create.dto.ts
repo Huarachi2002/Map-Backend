@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, IsUUID, MinLength } from "class-validator";
+import { IsEmail, IsNotEmpty, isString, IsString, IsUUID, MinLength } from "class-validator";
 
 export class EmpleadoCreateDto {
   @IsString()
@@ -12,6 +12,9 @@ export class EmpleadoCreateDto {
   @IsString()
   @IsEmail()
   correo: string;
+
+  @IsString()
+  tipo_empleado: string;
 
   @IsString()
   @IsUUID()

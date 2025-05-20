@@ -6,6 +6,8 @@ import { EnvConfig, envSchema } from './configuration';
 import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
 import { EntidadOperadoraModule } from './entidad-operadora/entidad-operadora.module';
+import { RutaModule } from './ruta/ruta.module';
+import { MicroModule } from './micro/micro.module';
 
 @Module({  imports: [
     PrismaModule, 
@@ -18,6 +20,8 @@ import { EntidadOperadoraModule } from './entidad-operadora/entidad-operadora.mo
     CommonModule,
     AuthModule,
     EntidadOperadoraModule,
+    RutaModule,
+    MicroModule
   ],
   controllers: [],
   providers: [],

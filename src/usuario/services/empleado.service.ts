@@ -58,7 +58,6 @@ export class EmpleadoService {
       include: {
         usuario: true,
         entidad: true,
-        micros: true
       }
     });
     
@@ -86,7 +85,7 @@ export class EmpleadoService {
     return empleados;
   }
 
-  public async create(userId: string, id_entidad: string): Promise<Empleado & { usuario: any; entidad: any }> {
+  public async create(userId: string, id_entidad: string, tipo_empleado: string): Promise<Empleado & { usuario: any; entidad: any }> {
     // Verificar que el usuario existe
     const usuario = await this.userService.findIdUser(userId);
     
@@ -105,7 +104,8 @@ export class EmpleadoService {
     const empleado = await this.prismaService.empleado.create({
       data: {
         id: usuario.id,
-        id_entidad
+        id_entidad,
+        tipo: tipo_empleado
       },
       include: {
         usuario: true,

@@ -80,11 +80,11 @@ export class EmpleadoController {  constructor(
       nombre: empleadoCreateDto.nombre,
       correo: empleadoCreateDto.correo,
       contrasena: empleadoCreateDto.contrasena,
-      tipo: 'empleado'
+      tipo: empleadoCreateDto.tipo_empleado
     });
     
     // Luego creamos el empleado con el ID del usuario
-    const empleado = await this.empleadoService.create(usuario.id, empleadoCreateDto.id_entidad);
+    const empleado = await this.empleadoService.create(usuario.id, empleadoCreateDto.id_entidad, empleadoCreateDto.tipo_empleado);
 
     return {
       statusCode,
@@ -95,23 +95,23 @@ export class EmpleadoController {  constructor(
     };
   }
   
-  @Post(':userId/entidad/:entidadId')
-  @HttpCode(HttpStatus.CREATED)
-  public async create(
-    @Param('userId', ParseUUIDPipe) userId: string,
-    @Param('entidadId', ParseUUIDPipe) entidadId: string
-  ): Promise<IApiResponse<IResponseEmpleado>> {
-    const statusCode = HttpStatus.CREATED;
-    const empleado = await this.empleadoService.create(userId, entidadId);
+  // @Post(':userId/entidad/:entidadId')
+  // @HttpCode(HttpStatus.CREATED)
+  // public async create(
+  //   @Param('userId', ParseUUIDPipe) userId: string,
+  //   @Param('entidadId', ParseUUIDPipe) entidadId: string
+  // ): Promise<IApiResponse<IResponseEmpleado>> {
+  //   const statusCode = HttpStatus.CREATED;
+  //   const empleado = await this.empleadoService.create(userId, entidadId);
 
-    return {
-      statusCode,
-      message: "Empleado creado exitosamente",
-      data: {
-        empleado
-      }
-    };
-  }
+  //   return {
+  //     statusCode,
+  //     message: "Empleado creado exitosamente",
+  //     data: {
+  //       empleado
+  //     }
+  //   };
+  // }
 
   @Put(':id/entidad/:entidadId')
   @HttpCode(HttpStatus.OK)
