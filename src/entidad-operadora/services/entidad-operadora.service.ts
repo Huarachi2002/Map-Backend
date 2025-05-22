@@ -120,7 +120,12 @@ export class EntidadOperadoraService {
       },
       data: {
         nombre: entidadDto.nombre,
-        direccion: entidadDto.direccion
+        tipo: entidadDto.tipo,
+        direccion: entidadDto.direccion,
+        correo_contacto: entidadDto.correo_contacto,
+        wallet_address: entidadDto.wallet_address,
+        saldo_ingresos: entidadDto.saldo_ingresos,
+        estado: entidadDto.estado
       }
     });
     

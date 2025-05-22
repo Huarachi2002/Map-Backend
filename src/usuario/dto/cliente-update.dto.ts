@@ -1,23 +1,22 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
 
-export class EntidadOperadoraCreateDto {
+export class ClienteUpdateDto {
   @IsString()
-  @MinLength(3)
-  @IsNotEmpty()
+  @MinLength(5)
+  @IsOptional()
   nombre: string;
-  
-  @IsString()
-  @IsNotEmpty()
-  tipo: string;
 
   @IsString()
-  @IsNotEmpty()
-  direccion: string;
+  @MinLength(8)
+  @IsOptional()
+  contrasena: string;
 
   @IsString()
   @IsEmail()
-  correo_contacto: string;
+  @IsOptional()
+  correo: string;
 
   @IsString()
+  @IsOptional()
   wallet_address: string;
 }

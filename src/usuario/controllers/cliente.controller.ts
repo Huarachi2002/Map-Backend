@@ -5,6 +5,7 @@ import { IApiResponse } from 'src/common/interface';
 import { QueryCommonDto } from 'src/common/dto';
 import { IResponseCliente } from '../interface';
 import { ClienteCreateDto } from '../dto';
+import { ClienteUpdateDto } from '../dto/cliente-update.dto';
 
 @Controller('cliente')
 @UseGuards(AuthTokenGuard)
@@ -94,33 +95,15 @@ export class ClienteController {  constructor(
       }
     };
   }
-  
-  @Post(':userId/wallet/:wallet_address')
-  @HttpCode(HttpStatus.CREATED)
-  public async create(
-    @Param('userId', ParseUUIDPipe) userId: string,
-    @Param('wallet_address') wallet_address: string
-  ): Promise<IApiResponse<IResponseCliente>> {
-    const statusCode = HttpStatus.CREATED;
-    const cliente = await this.clienteService.create(userId, wallet_address);
 
-    return {
-      statusCode,
-      message: "Cliente creado exitosamente",
-      data: {
-        cliente
-      }
-    };
-  }
-
-  @Put(':id/wallet/:wallet_address')
+  @Put(':id')
   @HttpCode(HttpStatus.OK)
   public async update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Param('wallet_address') wallet_address: string
+    @Body() clienteDto: ClienteUpdateDto
   ): Promise<IApiResponse<IResponseCliente>> {
     const statusCode = HttpStatus.OK;
-    const cliente = await this.clienteService.update(id, wallet_address);
+    const cliente = await this.clienteService.update(id, clienteDto);
 
     return {
       statusCode,

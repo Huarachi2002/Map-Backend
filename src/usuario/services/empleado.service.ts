@@ -3,6 +3,7 @@ import { Empleado } from '@prisma/client';
 import { PrismaService } from 'src/prisma/services';
 import { QueryCommonDto } from 'src/common/dto';
 import { UserService } from './user.service';
+import { EmpleadoUpdateDto } from '../dto/empleado-update.dto';
 
 @Injectable()
 export class EmpleadoService {
@@ -116,20 +117,9 @@ export class EmpleadoService {
     return empleado;
   }
 
-  public async update(id: string, id_entidad: string): Promise<Empleado & { usuario: any; entidad: any }> {
+  public async update(id: string, empleadoDto: EmpleadoUpdateDto): Promise<Empleado & { usuario: any; entidad: any }> {
     // Verificar que el empleado existe
     await this.findById(id);
-    
-    // Verificar que la entidad existe
-    const entidad = await this.prismaService.entidadOperadora.findUnique({
-      where: {
-        id: id_entidad
-      }
-    });
-    
-    if (!entidad) {
-      throw new BadRequestException(`La entidad con ID ${id_entidad} no existe`);
-    }
     
     // Actualizar empleado
     const updatedEmpleado = await this.prismaService.empleado.update({
@@ -137,7 +127,14 @@ export class EmpleadoService {
         id
       },
       data: {
-        id_entidad
+        tipo: empleadoDto.tipo_empleado,
+        usuario: {
+          update:{
+            nombre: empleadoDto.nombre,
+            correo: empleadoDto.correo,
+            contrasena: empleadoDto.contrasena,
+          }
+        }
       },
       include: {
         usuario: true,

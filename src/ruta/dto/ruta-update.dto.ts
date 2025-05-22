@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
 
 export class RutaUpdateDto {
     @IsString()
@@ -30,4 +30,9 @@ export class RutaUpdateDto {
     @IsOptional()
     vertices: string;
 
+    @IsNumber()
+    distancia: number;
+    
+    @IsNumber()
+    tiempo: number;
 }

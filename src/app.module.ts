@@ -9,6 +9,7 @@ import { EntidadOperadoraModule } from './entidad-operadora/entidad-operadora.mo
 import { RutaModule } from './ruta/ruta.module';
 import { MicroModule } from './micro/micro.module';
 import { SocketModule } from './socket/socket.module';
+import { ParadaModule } from './parada/parada.module';
 
 @Module({  imports: [
     PrismaModule, 
@@ -23,7 +24,8 @@ import { SocketModule } from './socket/socket.module';
     AuthModule,
     EntidadOperadoraModule,
     RutaModule,
-    MicroModule
+    MicroModule,
+    ParadaModule,
   ],
   controllers: [],
   providers: [],

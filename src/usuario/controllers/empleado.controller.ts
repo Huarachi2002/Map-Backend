@@ -5,6 +5,7 @@ import { IApiResponse } from 'src/common/interface';
 import { QueryCommonDto } from 'src/common/dto';
 import { IResponseEmpleado } from '../interface';
 import { EmpleadoCreateDto } from '../dto';
+import { EmpleadoUpdateDto } from '../dto/empleado-update.dto';
 
 @Controller('empleado')
 @UseGuards(AuthTokenGuard)
@@ -68,6 +69,7 @@ export class EmpleadoController {  constructor(
       }
     };
   }
+
   @Post()
   @HttpCode(HttpStatus.CREATED)
   public async createEmpleado(
@@ -80,7 +82,7 @@ export class EmpleadoController {  constructor(
       nombre: empleadoCreateDto.nombre,
       correo: empleadoCreateDto.correo,
       contrasena: empleadoCreateDto.contrasena,
-      tipo: empleadoCreateDto.tipo_empleado
+      tipo: 'EMPLEADO'
     });
     
     // Luego creamos el empleado con el ID del usuario
@@ -94,33 +96,15 @@ export class EmpleadoController {  constructor(
       }
     };
   }
-  
-  // @Post(':userId/entidad/:entidadId')
-  // @HttpCode(HttpStatus.CREATED)
-  // public async create(
-  //   @Param('userId', ParseUUIDPipe) userId: string,
-  //   @Param('entidadId', ParseUUIDPipe) entidadId: string
-  // ): Promise<IApiResponse<IResponseEmpleado>> {
-  //   const statusCode = HttpStatus.CREATED;
-  //   const empleado = await this.empleadoService.create(userId, entidadId);
 
-  //   return {
-  //     statusCode,
-  //     message: "Empleado creado exitosamente",
-  //     data: {
-  //       empleado
-  //     }
-  //   };
-  // }
-
-  @Put(':id/entidad/:entidadId')
+  @Put(':id')
   @HttpCode(HttpStatus.OK)
   public async update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Param('entidadId', ParseUUIDPipe) entidadId: string
+    @Body() empleadoDto: EmpleadoUpdateDto
   ): Promise<IApiResponse<IResponseEmpleado>> {
     const statusCode = HttpStatus.OK;
-    const empleado = await this.empleadoService.update(id, entidadId);
+    const empleado = await this.empleadoService.update(id, empleadoDto);
 
     return {
       statusCode,

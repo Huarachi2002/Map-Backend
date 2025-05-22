@@ -3,6 +3,7 @@ import { Cliente, Usuario } from '@prisma/client';
 import { PrismaService } from 'src/prisma/services';
 import { QueryCommonDto } from 'src/common/dto';
 import { UserService } from './user.service';
+import { ClienteUpdateDto } from '../dto/cliente-update.dto';
 
 @Injectable()
 export class ClienteService {
@@ -112,20 +113,9 @@ export class ClienteService {
     return cliente;
   }
 
-  public async update(id: string, wallet_address: string): Promise<Cliente & { usuario: any }> {
+  public async update(id: string, clienteDto: ClienteUpdateDto): Promise<Cliente & { usuario: any }> {
     // Verificar que el cliente existe
     await this.findById(id);
-    
-    // Verificar que el nuevo wallet_address no esté en uso por otro cliente
-    const existingWallet = await this.prismaService.cliente.findUnique({
-      where: {
-        wallet_address
-      }
-    });
-    
-    if (existingWallet && existingWallet.id !== id) {
-      throw new BadRequestException(`La dirección de wallet ${wallet_address} ya está en uso`);
-    }
     
     // Actualizar cliente
     const updatedCliente = await this.prismaService.cliente.update({
@@ -133,7 +123,14 @@ export class ClienteService {
         id
       },
       data: {
-        wallet_address
+        wallet_address: clienteDto.wallet_address,
+        usuario: {
+          update: {
+            nombre: clienteDto.nombre,
+            correo: clienteDto.correo,
+            contrasena: clienteDto.contrasena
+          }
+        }
       },
       include: {
         usuario: true
