@@ -3,7 +3,8 @@ import { EntidadOperadoraService } from '../services';
 import { QueryCommonDto } from 'src/common/dto';
 import { IApiResponse } from 'src/common/interface';
 import { EntidadOperadoraCreateDto, EntidadOperadoraUpdateDto } from '../dto';
-import { IResponseEntidadOperadora } from '../interface';
+import { IResponseEntidadOperadora, SolicitudRetiroDto } from '../interface';
+import { RetiroEntidad, TransaccionBlockchain } from '@prisma/client';
 
 @Controller('entidad-operadora')
 export class EntidadOperadoraController {
@@ -49,6 +50,22 @@ export class EntidadOperadoraController {
     };
   }
 
+  @Get('retiros/:id')
+  @HttpCode(HttpStatus.OK)
+  public async obtenerRetirosEntidad(
+    @Param('id', ParseUUIDPipe) id: string
+  ): Promise<IApiResponse<{ retiros: RetiroEntidad[] }>> {
+    const statusCode = HttpStatus.OK;
+    const retiros = await this.entidadOperadoraService.obtenerRetirosEntidad(id);
+    return {
+      statusCode,
+      message: "Retiros encontrados para la entidad operadora",
+      data: {
+        retiros
+      }
+    };
+  }
+
   @Post()
   @HttpCode(HttpStatus.CREATED)
   public async create(
@@ -62,6 +79,24 @@ export class EntidadOperadoraController {
       message: "Entidad operadora creada exitosamente",
       data: {
         entidad
+      }
+    };
+  }
+
+  @Post('procesar-retiro')
+  @HttpCode(HttpStatus.OK)
+  public async procesarRetiro(
+    @Body() solicitudDto: SolicitudRetiroDto
+  ): Promise<IApiResponse<{ retiro: RetiroEntidad; transaccion: TransaccionBlockchain }>> {
+    const statusCode = HttpStatus.OK;
+    const { retiro, transaccion } = await this.entidadOperadoraService.procesarRetiro(solicitudDto);
+
+    return {
+      statusCode,
+      message: "Retiro procesado exitosamente",
+      data: {
+        retiro,
+        transaccion
       }
     };
   }

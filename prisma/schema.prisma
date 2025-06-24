@@ -20,7 +20,7 @@ model Usuario {
   correo          String @db.VarChar(50)
   contrasena     String @db.Text 
   estado          Boolean @default(true)
-  tipo            String @db.VarChar(50) // cliente, empleado, admin
+  tipo            String @db.VarChar(50) // cliente, empleado
   
   cliente        Cliente?
   empleado        Empleado?

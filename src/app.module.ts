@@ -10,6 +10,8 @@ import { RutaModule } from './ruta/ruta.module';
 import { MicroModule } from './micro/micro.module';
 import { SocketModule } from './socket/socket.module';
 import { ParadaModule } from './parada/parada.module';
+import { BlockchainModule } from './blockchain/blockchain.module';
+import { TarjetaModule } from './tarjeta/tarjeta.module';
 
 @Module({  imports: [
     PrismaModule, 
@@ -26,6 +28,8 @@ import { ParadaModule } from './parada/parada.module';
     RutaModule,
     MicroModule,
     ParadaModule,
+    BlockchainModule,
+    TarjetaModule
   ],
   controllers: [],
   providers: [],
