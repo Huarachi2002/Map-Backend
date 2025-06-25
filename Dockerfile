@@ -56,4 +56,5 @@ EXPOSE 3001
 # Comando para iniciar la aplicación
 CMD echo "Esperando a que la base de datos esté lista..." && \
     npx prisma migrate deploy && \
+    npm run seed && \
     npm run start:prod
