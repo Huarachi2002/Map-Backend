@@ -313,7 +313,7 @@ export class EntidadOperadoraService {
 
     // 4. Preparar datos para el blockchain
     const withdrawalRequest: WithdrawalRequest = {
-      toAddress: solicitudDto.wallet_destino,
+      toAddress: entidad.wallet_address,
       cryptoAmount: montoCripto,
       cryptoType: solicitudDto.tipo_cripto_destino,
       amount: solicitudDto.monto,
@@ -339,7 +339,7 @@ export class EntidadOperadoraService {
             monto_original: montoCripto,
             gas_fee: blockchainResponse.gasFee || 0,
             direccion_origen: process.env.APP_WALLET_ADDRESS,
-            direccion_destino: solicitudDto.wallet_destino,
+            direccion_destino: entidad.wallet_address,
           }
         });
 
@@ -360,7 +360,7 @@ export class EntidadOperadoraService {
         await tx.entidadOperadora.update({
           where: { id: solicitudDto.id_entidad },
           data: { 
-            saldo_ingresos: { decrement: solicitudDto.monto }
+            saldo_ingresos: { decrement: solicitudDto.monto * solicitudDto.tasa_conversion }
           }
         });
 

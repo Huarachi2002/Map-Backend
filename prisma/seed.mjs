@@ -264,13 +264,13 @@ async function main(){
                 {
                     tipo_tarjeta: 'VIRTUAL',
                     nfc_id: `NFC${timestamp}001`, // NFC ID único
-                    saldo_actual: 50.0,
+                    saldo_actual: 5000.0,
                     id_cliente: usuarioCliente1.cliente.id
                 },
                 {
                     tipo_tarjeta: 'VIRTUAL',
                     nfc_id: `NFC${timestamp}002`, // NFC ID único
-                    saldo_actual: 100.0,
+                    saldo_actual: 1000.0,
                     id_cliente: usuarioCliente2.cliente.id
                 }
             ]

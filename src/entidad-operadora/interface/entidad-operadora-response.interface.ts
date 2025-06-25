@@ -11,7 +11,6 @@ export interface SolicitudRetiroDto {
   monto: number;
   tipo_cripto_destino: string;
   tasa_conversion: number; // cripto por cada boliviano
-  wallet_destino: string;
 }
 
 export interface WithdrawalRequest {

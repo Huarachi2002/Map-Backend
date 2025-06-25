@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, Put, UseGuards } from '@nestjs/common';
 import { AuthTokenGuard } from 'src/auth/guard';
 import { TarjetaService } from '../services/tarjeta.service';
 import { IApiResponse } from 'src/common/interface';
@@ -59,6 +59,21 @@ export class TarjetaController {
         };
     }
 
+    @Get(':id')
+    @HttpCode(HttpStatus.OK)
+    async obtenerTarjetaPorId(
+        @Param('id', ParseUUIDPipe) id: string
+    ): Promise<IApiResponse<any>> {
+        const statusCode = HttpStatus.OK;
+        const tarjeta = await this.tarjetaService.obtenerTarjetaPorId(id);
+
+        return {
+            statusCode,
+            message: "Tarjeta obtenida exitosamente",
+            data: tarjeta
+        };
+    }
+
     // Obtiene las tarjetas de un cliente específico
     @Get('cliente-tarjeta/:id_cliente')
     @HttpCode(HttpStatus.OK)
@@ -102,6 +117,22 @@ export class TarjetaController {
             statusCode,
             message: "Historial de pagos obtenido exitosamente",
             data: pagos
+        };
+    }
+
+    @Put(':id')
+    @HttpCode(HttpStatus.OK)
+    async actualizarTarjeta(
+        @Param('id', ParseUUIDPipe) id: string,
+        @Body() updateDto: { saldo: number }
+    ): Promise<IApiResponse<any>> {
+        const statusCode = HttpStatus.OK;
+        const tarjeta = await this.tarjetaService.actualizarTarjeta(id, updateDto);
+
+        return {
+            statusCode,
+            message: "Tarjeta actualizada exitosamente",
+            data: tarjeta
         };
     }
 }

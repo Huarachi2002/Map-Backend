@@ -39,7 +39,7 @@ export class TarjetaService {
             toAddress: process.env.APP_WALLET_ADDRESS, // Wallet de la aplicación
             cryptoAmount: recargaDto.monto_cripto,
             cryptoType: recargaDto.tipo_cripto,
-            bolivianosAmount: montoBolivianos,
+            amount: montoBolivianos,
             exchangeId
         };
 
@@ -178,6 +178,27 @@ export class TarjetaService {
         });
     }
 
+    public async obtenerTarjetaPorId(id: string): Promise<Tarjeta> {
+        const tarjeta = await this.prismaService.tarjeta.findUnique({
+            where: { id },
+            include: {
+                cliente: {
+                    include: { usuario: true }
+                },
+                pagos: {
+                    orderBy: { createdAt: 'desc' }
+                },
+                movimientos: {
+                    orderBy: { createdAt: 'desc' }
+                }
+            }
+        });
+        if (!tarjeta) {
+            throw new NotFoundException('Tarjeta no encontrada');
+        }
+        return tarjeta;
+    }
+
     public async obtenerTarjetasCliente(id_cliente: string): Promise<Tarjeta[]> {
         return this.prismaService.tarjeta.findMany({
             where: { id_cliente },
@@ -206,5 +227,19 @@ export class TarjetaService {
             },
             orderBy: { createdAt: 'desc' }
         });
+    }
+
+    public async actualizarTarjeta(id: string, updateDto: { saldo: number }): Promise<Tarjeta> {
+        const tarjeta = await this.prismaService.tarjeta.update({
+            where: { id },
+            data: { saldo_actual: updateDto.saldo },
+            include: { cliente: { include: { usuario: true } } }
+        });
+
+        if (!tarjeta) {
+            throw new NotFoundException('Tarjeta no encontrada');
+        }
+
+        return tarjeta;
     }
 }

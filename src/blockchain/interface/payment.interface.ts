@@ -3,7 +3,7 @@ export interface ExchangeRequest {
   toAddress: string;
   cryptoAmount: number;
   cryptoType: string;
-  bolivianosAmount: number;
+  amount: number;
   exchangeId: string;
 }
 
@@ -11,7 +11,7 @@ export interface WithdrawalRequest {
   toAddress: string;
   cryptoAmount: number;
   cryptoType: string;
-  bolivianosAmount: number;
+  amount: number;
   withdrawalId: string;
 }
 
