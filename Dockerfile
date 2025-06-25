@@ -42,6 +42,7 @@ RUN apt-get update && apt-get install -y \
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
 # Instalar solo las dependencias de producción y reconstruir bcrypt
 RUN npm ci --only=production && npx prisma generate
