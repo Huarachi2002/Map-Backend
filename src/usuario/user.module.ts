@@ -5,14 +5,15 @@ import { ClienteController, EmpleadoController, UserController } from './control
 import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  providers: [UserService, ClienteService, EmpleadoService],
+  providers: [UserService, ClienteService, EmpleadoService ],
   imports: [
     PrismaModule,
     forwardRef( () => AuthModule),
-  ],  exports: [
+  ],  
+  exports: [
     UserService,
     ClienteService,
-    EmpleadoService
+    EmpleadoService,
   ],
   controllers: [UserController, ClienteController, EmpleadoController]
 })

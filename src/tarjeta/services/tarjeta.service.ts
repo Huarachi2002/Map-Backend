@@ -145,6 +145,21 @@ export class TarjetaService {
                 include: { cliente: { include: { usuario: true } } }
             });
 
+            await tx.entidadPago.create({
+                data: {
+                    id_entidad: micro.id_entidad,
+                    monto_ingresado: pagoDto.monto,
+                    id_pago: movimiento.id
+                }
+            })
+
+            await tx.entidadOperadora.update({
+                where: { id: micro.id_entidad },
+                data: {
+                    saldo_ingresos: { increment: pagoDto.monto }
+                }
+            })
+
             return movimiento;
         });
 

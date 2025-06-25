@@ -110,6 +110,14 @@ export class ClienteService {
         usuario: true
       }
     });
+
+    await this.prismaService.tarjeta.create({
+      data: {
+        id_cliente: cliente.id,
+        tipo_tarjeta: 'VIRTUAL',
+        saldo_actual: 0, // Inicializar saldo en 0
+      }
+    })
     
     return cliente;
   }

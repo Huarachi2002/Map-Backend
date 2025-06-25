@@ -37,14 +37,17 @@ export class AuthService {
     if(findUser.tipo === 'CLIENTE') {
       clienteInfo = await this.prismaService.cliente.findUnique({
         where: { id: findUser.id },
-        include: { usuario: true }
+        include: { 
+          usuario: true,
+          tarjetas: true
+        }
       });
     } else if(findUser.tipo === 'EMPLEADO') {
       empleadoInfo = await this.prismaService.empleado.findUnique({
         where: { id: findUser.id },
         include: { 
           entidad: true,
-          micros: true 
+          micros: true
         }
       });
     }

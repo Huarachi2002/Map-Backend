@@ -13,6 +13,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model CriptoMonedas{
+  id          String @db.Uuid @unique @id @default(uuid())
+  nombre      String @db.VarChar(50) @unique
+  simbolo     String @db.VarChar(10) @unique
+  estado      Boolean @default(true)
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
+}
+
 model Divisa {
   id          String @db.Uuid @unique @id @default(uuid())
   nombre      String @db.VarChar(50) @unique
@@ -121,6 +131,8 @@ model Pago {
   id_micro String @db.Uuid
   micro     Micro   @relation(fields: [id_micro], references: [id])
 
+  entidad_pago EntidadPago[]
+
   createdAt   DateTime @db.Timestamp() @default(now()) 
   updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt 
 }
@@ -203,8 +215,12 @@ model Tracking {
 
 model EntidadPago{
   id          String @db.Uuid @unique @id @default(uuid())
+  id_pago    String @db.Uuid
+  pago        Pago   @relation(fields: [id_pago], references: [id])
   id_entidad  String @db.Uuid
   entidad     EntidadOperadora    @relation(fields: [id_entidad], references: [id])
+
+  monto_ingresado Float @default(0)
 
   createdAt   DateTime @db.Timestamp() @default(now()) 
   updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
