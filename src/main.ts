@@ -14,10 +14,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix("api");
   app.enableCors({
-    origin: [
-      'http://localhost:3000', // URL de desarrollo
-      'https://webcolaborativaux-cgfaamc3gggwegg6.eastus-01.azurewebsites.net' // URL de Azure
-    ],
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true,
   });

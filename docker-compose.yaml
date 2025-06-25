@@ -1,13 +1,13 @@
 version: '3.8'
 services:
-  diagram_db:
+  map_db:
     image: postgres:13
     restart: unless-stopped
-    container_name: diagram_db_container
+    container_name: map_db_container
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: hiachi20
-      POSTGRES_DB: Diagrama
+      POSTGRES_DB: Map
     ports:
       - "5433:5432"
     volumes:
@@ -25,22 +25,18 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: backend_container
-    restart: unless-stopped
+    restart: always
     environment:
-      NODE_ENV: production
       PORT: 3001
-      DATABASE_URL: postgresql://postgres:hiachi20@diagram_db/Diagrama?schema=public
-      SECRET_KEY_JWT: ${SECRET_KEY_JWT}
-      ACCOUNT_EMAIL: ${ACCOUNT_EMAIL}
-      PASSWORD_EMAIL: ${PASSWORD_EMAIL}
-      HOST_EMAIL: ${HOST_EMAIL}
-      URL_FRONTEND: ${URL_FRONTEND}
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
-      LIVEBLOCKS_SECRET_KEY: ${LIVEBLOCKS_SECRET_KEY}
+      DATABASE_URL: postgresql://postgres:hiachi20@map_db:5432/Map?schema=public
+      SECRET_KEY_JWT: "MILLAVE123"
+      BLOCKCHAIN_SERVICE_URL: http://localhost:3002
+      TOKEN_ADDRESS: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+      APP_WALLET_ADDRESS: 0xdF68EE8cB29069042451Baa024b742e2B04AeB21
     ports:
       - "3001:3001"
     depends_on:
-      diagram_db:
+      map_db:
         condition: service_healthy
     volumes:
       - ./uploads:/app/uploads

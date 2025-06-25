@@ -257,13 +257,13 @@ async function main(){
                 tipo_tarjeta: 'VIRTUAL',
                 nfc_id: 'NFC001',
                 saldo_actual: 50.0,
-                id_cliente: usuarioCliente1.cliente?.id!
+                id_cliente: usuarioCliente1.cliente.id
             },
             {
                 tipo_tarjeta: 'VIRTUAL',
                 nfc_id: 'NFC002',
                 saldo_actual: 100.0,
-                id_cliente: usuarioCliente2.cliente?.id!
+                id_cliente: usuarioCliente2.cliente.id
             }
         ]
     });
