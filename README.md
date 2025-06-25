@@ -32,6 +32,23 @@
 $ npm install
 ```
 
+## Generar DB con prisma
+
+# npx prisma migrate dev
+
+# npx prisma generate
+
+## Correr Script seed
+
+# Opción 1: Con npm
+npm run seed
+
+# Opción 2: Directamente con Prisma
+npx prisma db seed
+
+# Opción 3: Resetear DB y ejecutar seed
+npx prisma migrate reset
+
 ## Compile and run the project
 
 ```bash

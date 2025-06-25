@@ -84,14 +84,14 @@ export class ClienteService {
     return cliente;
   }
 
-  public async create(userId: string, wallet_address: string): Promise<Cliente & { usuario: any }> {
+  public async create(userId: string, wallet_address: string, id_divisa: string): Promise<Cliente & { usuario: any }> {
     // Verificar que el usuario existe
     const usuario = await this.userService.findIdUser(userId);
     
     // Verificar que el wallet_address no esté en uso
     const existingWallet = await this.prismaService.cliente.findUnique({
       where: {
-        wallet_address
+        wallet_address,
       }
     });
     
@@ -103,7 +103,8 @@ export class ClienteService {
     const cliente = await this.prismaService.cliente.create({
       data: {
         id: usuario.id,
-        wallet_address
+        wallet_address,
+        id_divisa,
       },
       include: {
         usuario: true

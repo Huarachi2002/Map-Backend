@@ -12,8 +12,10 @@ import { SocketModule } from './socket/socket.module';
 import { ParadaModule } from './parada/parada.module';
 import { BlockchainModule } from './blockchain/blockchain.module';
 import { TarjetaModule } from './tarjeta/tarjeta.module';
+import { DivisaModule } from './divisa/divisa.module';
 
-@Module({  imports: [
+@Module({  
+  imports: [
     PrismaModule, 
     SocketModule,
     UserModule,
@@ -29,7 +31,8 @@ import { TarjetaModule } from './tarjeta/tarjeta.module';
     MicroModule,
     ParadaModule,
     BlockchainModule,
-    TarjetaModule
+    TarjetaModule,
+    DivisaModule
   ],
   controllers: [],
   providers: [],

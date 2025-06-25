@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { ExchangeRequest, RecargaTarjetaDto } from "../interface/tarjeta.interface";
+import { ExchangeRequest, PagoPasajeDto, RecargaTarjetaDto } from "../interface/tarjeta.interface";
 import { PrismaService } from "src/prisma/services";
 import { BlockchainService } from "src/blockchain/services/blockchain.service";
-import { Movimiento, Tarjeta, TransaccionBlockchain } from "@prisma/client";
+import { Movimiento, Pago, Tarjeta, TransaccionBlockchain } from "@prisma/client";
 
 
 @Injectable()
@@ -102,7 +102,7 @@ export class TarjetaService {
         }
     }
 
-    public async procesarPago(pagoDto: { id_tarjeta: string; monto: number }): Promise<Movimiento> {
+    public async procesarPago(pagoDto: PagoPasajeDto): Promise<Pago> {
         const tarjeta = await this.prismaService.tarjeta.findUnique({
             where: { id: pagoDto.id_tarjeta },
             include: { cliente: { include: { usuario: true } } }
@@ -116,14 +116,23 @@ export class TarjetaService {
             throw new BadRequestException('Saldo insuficiente en la tarjeta');
         }
 
+        const micro = await this.prismaService.micro.findUnique({
+            where: { id: pagoDto.id_micro },
+        });
+
+        if (!micro) {
+            throw new NotFoundException('Micro no encontrado');
+        }
+
         const result = await this.prismaService.$transaction(async (tx) => {
             // Crear movimiento de pago
-            const movimiento = await tx.movimiento.create({
+            const movimiento = await tx.pago.create({
                 data: {
                     id_tarjeta: pagoDto.id_tarjeta,
-                    monto_cripto: 0, // No aplica para pagos
-                    monto_convertido: pagoDto.monto,
-                    tasa_conversion: 1, // No aplica para pagos
+                    monto_pagado: pagoDto.monto,
+                    modo_pago: 'TARJETA',
+                    estado: true,
+                    id_micro: pagoDto.id_micro,
                 }
             });
 
@@ -170,6 +179,16 @@ export class TarjetaService {
         return this.prismaService.movimiento.findMany({
             where: { id_tarjeta },
             include: { TransaccionBlockchain: true },
+            orderBy: { createdAt: 'desc' }
+        });
+    }
+
+    public async obtenerHistorialPagos(id_tarjeta: string): Promise<Pago[]> {
+        return this.prismaService.pago.findMany({
+            where: { id_tarjeta },
+            include: {
+                micro: true,
+            },
             orderBy: { createdAt: 'desc' }
         });
     }

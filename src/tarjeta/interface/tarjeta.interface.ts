@@ -13,3 +13,9 @@ export interface ExchangeRequest {
     bolivianosAmount: number;
     exchangeId: string;
 }
+
+export interface PagoPasajeDto {
+    id_tarjeta: string;
+    monto: number;
+    id_micro: string;
+}

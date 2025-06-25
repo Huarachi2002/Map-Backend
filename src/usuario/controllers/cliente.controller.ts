@@ -81,11 +81,11 @@ export class ClienteController {  constructor(
       nombre: clienteCreateDto.nombre,
       correo: clienteCreateDto.correo,
       contrasena: clienteCreateDto.contrasena,
-      tipo: 'CLIENTE'
+      tipo: 'CLIENTE',
     });
     
     // Luego creamos el cliente con el ID del usuario
-    const cliente = await this.clienteService.create(usuario.id, clienteCreateDto.wallet_address);
+    const cliente = await this.clienteService.create(usuario.id, clienteCreateDto.wallet_address, clienteCreateDto.id_divisa);
 
     return {
       statusCode,

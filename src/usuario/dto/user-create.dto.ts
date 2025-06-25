@@ -30,4 +30,5 @@ export class UserCreateDto {
   @IsString()
   @IsOptional()
   tipo_empleado?: string;
+
 }

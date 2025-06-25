@@ -13,6 +13,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Divisa {
+  id          String @db.Uuid @unique @id @default(uuid())
+  nombre      String @db.VarChar(50) @unique
+  simbolo     String @db.VarChar(10) @unique
+  pais        String @db.VarChar(50) // Ejemplo: "Bolivia" 
+
+  clientes    Cliente[]
+  entidades_operadoras EntidadOperadora[]
+
+  createdAt   DateTime @db.Timestamp() @default(now()) 
+  updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
+}
 
 model Usuario {
   id              String @db.Uuid @unique @id @default(uuid())
@@ -30,9 +42,11 @@ model Usuario {
 }
 
 model Cliente{
-  id         String @db.Uuid @unique @id @default(uuid())
-  usuario        Usuario   @relation(fields: [id], references: [id])
+  id              String @db.Uuid @unique @id @default(uuid())
+  usuario         Usuario   @relation(fields: [id], references: [id])
   wallet_address  String @db.VarChar(100) @unique
+  id_divisa       String @db.Uuid
+  divisa         Divisa   @relation(fields: [id_divisa], references: [id])
 
   registros       Registro[]
   notificaciones  Notificacion[]
@@ -121,6 +135,13 @@ model EntidadOperadora {
   saldo_ingresos Float @default(0)
   estado      Boolean @default(true)
 
+  latitud    Float @default(0) // Latitud de la entidad
+  longitud   Float @default(0) // Longitud de la entidad
+
+  cobro_pasaje Float @default(0) // Monto de cuanto cobrar por pasaje
+  id_divisa   String @db.Uuid
+  divisa      Divisa   @relation(fields: [id_divisa], references: [id])
+
   entidad_pagos   EntidadPago[]
   empleados       Empleado[]
   retiros_entidad RetiroEntidad[]
@@ -130,6 +151,7 @@ model EntidadOperadora {
   createdAt   DateTime @db.Timestamp() @default(now()) 
   updatedAt   DateTime @db.Timestamp() @default(now()) @updatedAt
 }
+
 
 model Empleado{
   id         String @db.Uuid @unique @id @default(uuid())
@@ -237,18 +259,18 @@ model RetiroEntidad {
 }
 
 model TransaccionBlockchain {
-  id          String @db.Uuid @unique @id @default(uuid())
-  id_movimiento String? @db.Uuid
-  movimiento   Movimiento?   @relation(fields: [id_movimiento], references: [id])
-  id_retiro_entidad String? @db.Uuid
-  retiro_entidad RetiroEntidad?   @relation(fields: [id_retiro_entidad], references: [id])
-  tipo_transaccion String @db.VarChar(50)
-  tx_hash String @db.Text
-  cripto_usada String @db.VarChar(30)
-  monto_original Float @default(0)
-  gas_fee Float @default(0)
-  direccion_origen String @db.VarChar(150)
-  direccion_destino String @db.VarChar(150)
+  id                    String @db.Uuid @unique @id @default(uuid())
+  id_movimiento         String? @db.Uuid
+  movimiento            Movimiento?   @relation(fields: [id_movimiento], references: [id])
+  id_retiro_entidad     String? @db.Uuid
+  retiro_entidad        RetiroEntidad?   @relation(fields: [id_retiro_entidad], references: [id])
+  tipo_transaccion      String @db.VarChar(50) // "PAGO", "RETIRO", "EXCHANGE_RECARGA"
+  tx_hash               String @db.Text
+  cripto_usada          String @db.VarChar(30)
+  monto_original        Float @default(0)
+  gas_fee               Float @default(0)
+  direccion_origen      String @db.VarChar(150)
+  direccion_destino     String @db.VarChar(150)
 
 
   createdAt   DateTime @db.Timestamp() @default(now()) 
