@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
+import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
 
 export class EntidadOperadoraCreateDto {
   @IsString()
@@ -14,10 +14,21 @@ export class EntidadOperadoraCreateDto {
   @IsNotEmpty()
   direccion: string;
 
+  @IsNumber()
+  @IsNotEmpty()
+  latitud: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  longitud: number;
+
   @IsString()
   @IsEmail()
   correo_contacto: string;
 
   @IsString()
   wallet_address: string;
+
+  @IsString()
+  id_divisa: string;
 }

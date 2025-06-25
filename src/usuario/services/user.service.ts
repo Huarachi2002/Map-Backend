@@ -85,11 +85,6 @@ export class UserService {
           correo: usuarioCreateDto.correo,
           tipo: usuarioCreateDto.tipo,
           contrasena: this.hashPass(usuarioCreateDto.contrasena),
-          cliente: {
-            create: {
-              wallet_address: usuarioCreateDto.wallet_address
-            }
-          }
         },
         include:{
           cliente: true,

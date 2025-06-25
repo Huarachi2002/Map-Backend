@@ -9,7 +9,8 @@ import { RutaController } from './controllers/ruta.controller';
   imports: [
     PrismaModule,
     forwardRef( () => AuthModule),
-  ],  exports: [
+  ],  
+  exports: [
     RutaService,
   ],
   controllers: [RutaController]

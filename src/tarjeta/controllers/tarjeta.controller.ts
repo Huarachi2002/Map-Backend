@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post
 import { AuthTokenGuard } from 'src/auth/guard';
 import { TarjetaService } from '../services/tarjeta.service';
 import { IApiResponse } from 'src/common/interface';
-import { RecargaTarjetaDto } from '../interface/tarjeta.interface';
+import { PagoPasajeDto, RecargaTarjetaDto } from '../interface/tarjeta.interface';
 
 @Controller('tarjeta')
 @UseGuards(AuthTokenGuard)
@@ -24,10 +24,11 @@ export class TarjetaController {
         };
     }
 
+    // Procesa un pago con una tarjeta a un micro
     @Post('pago')
     @HttpCode(HttpStatus.OK)
     async procesarPago(
-        @Body() pagoDto: { id_tarjeta: string; monto: number }
+        @Body() pagoDto: PagoPasajeDto
     ): Promise<IApiResponse<any>> {
         const statusCode = HttpStatus.OK;
         const resultado = await this.tarjetaService.procesarPago(pagoDto);
@@ -39,6 +40,7 @@ export class TarjetaController {
         };
     }
 
+    // Crea una nueva tarjeta para un cliente
     @Post('crear')
     @HttpCode(HttpStatus.CREATED)
     async crearTarjeta(
@@ -57,7 +59,8 @@ export class TarjetaController {
         };
     }
 
-    @Get('cliente/:id_cliente')
+    // Obtiene las tarjetas de un cliente específico
+    @Get('cliente-tarjeta/:id_cliente')
     @HttpCode(HttpStatus.OK)
     async obtenerTarjetasCliente(
         @Param('id_cliente', ParseUUIDPipe) id_cliente: string
@@ -84,6 +87,21 @@ export class TarjetaController {
             statusCode,
             message: "Historial obtenido exitosamente",
             data: movimientos
+        };
+    }
+
+    @Get(':id_tarjeta/pagos')
+    @HttpCode(HttpStatus.OK)
+    async obtenerHistorialPagos(
+        @Param('id_tarjeta', ParseUUIDPipe) id_tarjeta: string
+    ): Promise<IApiResponse<any[]>> {
+        const statusCode = HttpStatus.OK;
+        const pagos = await this.tarjetaService.obtenerHistorialPagos(id_tarjeta);
+
+        return {
+            statusCode,
+            message: "Historial de pagos obtenido exitosamente",
+            data: pagos
         };
     }
 }

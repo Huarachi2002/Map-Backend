@@ -66,6 +66,22 @@ export class EntidadOperadoraController {
     };
   }
 
+  @Get('tarifa/:id')
+  @HttpCode(HttpStatus.OK)
+  public async obtenerTarifaEntidad(
+    @Param('id', ParseUUIDPipe) id: string
+  ): Promise<IApiResponse<{ tarifa: number }>> {
+    const statusCode = HttpStatus.OK;
+    const tarifa = await this.entidadOperadoraService.obtenerTarifaEntidad(id);
+    return {
+      statusCode,
+      message: "Tarifa obtenida exitosamente",
+      data: {
+        tarifa
+      }
+    };
+  }
+
   @Post()
   @HttpCode(HttpStatus.CREATED)
   public async create(
@@ -83,7 +99,7 @@ export class EntidadOperadoraController {
     };
   }
 
-  @Post('procesar-retiro')
+  @Post('retirar-fondos')
   @HttpCode(HttpStatus.OK)
   public async procesarRetiro(
     @Body() solicitudDto: SolicitudRetiroDto
