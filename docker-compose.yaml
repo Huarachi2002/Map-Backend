@@ -30,7 +30,7 @@ services:
       PORT: 3001
       DATABASE_URL: postgresql://postgres:hiachi20@map_db:5432/Map?schema=public
       SECRET_KEY_JWT: "MILLAVE123"
-      BLOCKCHAIN_SERVICE_URL: http://localhost:3002
+      BLOCKCHAIN_SERVICE_URL: http://blockchain-api:3002
       TOKEN_ADDRESS: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
       APP_WALLET_ADDRESS: 0xdF68EE8cB29069042451Baa024b742e2B04AeB21
     ports:
@@ -43,6 +43,7 @@ services:
       - ./temp:/app/temp
     networks:
       - app-network
+      - blockchain_network
 
 volumes:
   postgres_data:
@@ -50,3 +51,6 @@ volumes:
 networks:
   app-network:
     driver: bridge
+  blockchain_network:
+    name: backend-blockchain-sw1_blockchain_network
+    external: true
