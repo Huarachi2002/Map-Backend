@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "public"."CriptoMonedas" (
+CREATE TABLE "CriptoMonedas" (
     "id" UUID NOT NULL,
     "nombre" VARCHAR(50) NOT NULL,
     "simbolo" VARCHAR(10) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE "public"."CriptoMonedas" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Divisa" (
+CREATE TABLE "Divisa" (
     "id" UUID NOT NULL,
     "nombre" VARCHAR(50) NOT NULL,
     "simbolo" VARCHAR(10) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE "public"."Divisa" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Usuario" (
+CREATE TABLE "Usuario" (
     "id" UUID NOT NULL,
     "nombre" VARCHAR(40) NOT NULL,
     "correo" VARCHAR(50) NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE "public"."Usuario" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Cliente" (
+CREATE TABLE "Cliente" (
     "id" UUID NOT NULL,
     "wallet_address" VARCHAR(100) NOT NULL,
     "id_divisa" UUID NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE "public"."Cliente" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Registro" (
+CREATE TABLE "Registro" (
     "id" UUID NOT NULL,
     "id_cliente" UUID NOT NULL,
     "accion" VARCHAR(50) NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE "public"."Registro" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Notificacion" (
+CREATE TABLE "Notificacion" (
     "id" UUID NOT NULL,
     "id_cliente" UUID NOT NULL,
     "titulo" TEXT NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE "public"."Notificacion" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Tarjeta" (
+CREATE TABLE "Tarjeta" (
     "id" UUID NOT NULL,
     "id_cliente" UUID NOT NULL,
     "tipo_tarjeta" VARCHAR(50) NOT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE "public"."Tarjeta" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Movimiento" (
+CREATE TABLE "Movimiento" (
     "id" UUID NOT NULL,
     "id_tarjeta" UUID NOT NULL,
     "monto_cripto" DOUBLE PRECISION NOT NULL DEFAULT 0,
@@ -99,7 +99,7 @@ CREATE TABLE "public"."Movimiento" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Pago" (
+CREATE TABLE "Pago" (
     "id" UUID NOT NULL,
     "id_tarjeta" UUID NOT NULL,
     "monto_pagado" DOUBLE PRECISION NOT NULL DEFAULT 0,
@@ -115,7 +115,7 @@ CREATE TABLE "public"."Pago" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."EntidadOperadora" (
+CREATE TABLE "EntidadOperadora" (
     "id" UUID NOT NULL,
     "nombre" VARCHAR(50) NOT NULL,
     "tipo" VARCHAR(50) NOT NULL,
@@ -135,7 +135,7 @@ CREATE TABLE "public"."EntidadOperadora" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Empleado" (
+CREATE TABLE "Empleado" (
     "id" UUID NOT NULL,
     "tipo" VARCHAR(50) NOT NULL,
     "id_entidad" UUID NOT NULL,
@@ -146,7 +146,7 @@ CREATE TABLE "public"."Empleado" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Micro" (
+CREATE TABLE "Micro" (
     "id" UUID NOT NULL,
     "id_entidad" UUID NOT NULL,
     "id_ruta" UUID,
@@ -161,7 +161,7 @@ CREATE TABLE "public"."Micro" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Tracking" (
+CREATE TABLE "Tracking" (
     "id" UUID NOT NULL,
     "id_micro" UUID NOT NULL,
     "latitud" DOUBLE PRECISION NOT NULL DEFAULT 0,
@@ -178,7 +178,7 @@ CREATE TABLE "public"."Tracking" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."EntidadPago" (
+CREATE TABLE "EntidadPago" (
     "id" UUID NOT NULL,
     "id_pago" UUID NOT NULL,
     "id_entidad" UUID NOT NULL,
@@ -190,7 +190,7 @@ CREATE TABLE "public"."EntidadPago" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Parada" (
+CREATE TABLE "Parada" (
     "id" UUID NOT NULL,
     "id_ruta" UUID NOT NULL,
     "nombre" VARCHAR(50) NOT NULL,
@@ -204,7 +204,7 @@ CREATE TABLE "public"."Parada" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Ruta" (
+CREATE TABLE "Ruta" (
     "id" UUID NOT NULL,
     "id_entidad" UUID NOT NULL,
     "nombre" VARCHAR(50) NOT NULL,
@@ -223,7 +223,7 @@ CREATE TABLE "public"."Ruta" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."RetiroEntidad" (
+CREATE TABLE "RetiroEntidad" (
     "id" UUID NOT NULL,
     "id_entidad" UUID NOT NULL,
     "monto_cripto" DOUBLE PRECISION NOT NULL DEFAULT 0,
@@ -236,7 +236,7 @@ CREATE TABLE "public"."RetiroEntidad" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."TransaccionBlockchain" (
+CREATE TABLE "TransaccionBlockchain" (
     "id" UUID NOT NULL,
     "id_movimiento" UUID,
     "id_retiro_entidad" UUID,
@@ -254,139 +254,139 @@ CREATE TABLE "public"."TransaccionBlockchain" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "CriptoMonedas_id_key" ON "public"."CriptoMonedas"("id");
+CREATE UNIQUE INDEX "CriptoMonedas_id_key" ON "CriptoMonedas"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "CriptoMonedas_nombre_key" ON "public"."CriptoMonedas"("nombre");
+CREATE UNIQUE INDEX "CriptoMonedas_nombre_key" ON "CriptoMonedas"("nombre");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "CriptoMonedas_simbolo_key" ON "public"."CriptoMonedas"("simbolo");
+CREATE UNIQUE INDEX "CriptoMonedas_simbolo_key" ON "CriptoMonedas"("simbolo");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Divisa_id_key" ON "public"."Divisa"("id");
+CREATE UNIQUE INDEX "Divisa_id_key" ON "Divisa"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Divisa_nombre_key" ON "public"."Divisa"("nombre");
+CREATE UNIQUE INDEX "Divisa_nombre_key" ON "Divisa"("nombre");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Divisa_simbolo_key" ON "public"."Divisa"("simbolo");
+CREATE UNIQUE INDEX "Divisa_simbolo_key" ON "Divisa"("simbolo");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Usuario_id_key" ON "public"."Usuario"("id");
+CREATE UNIQUE INDEX "Usuario_id_key" ON "Usuario"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Cliente_id_key" ON "public"."Cliente"("id");
+CREATE UNIQUE INDEX "Cliente_id_key" ON "Cliente"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Cliente_wallet_address_key" ON "public"."Cliente"("wallet_address");
+CREATE UNIQUE INDEX "Cliente_wallet_address_key" ON "Cliente"("wallet_address");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Registro_id_key" ON "public"."Registro"("id");
+CREATE UNIQUE INDEX "Registro_id_key" ON "Registro"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Notificacion_id_key" ON "public"."Notificacion"("id");
+CREATE UNIQUE INDEX "Notificacion_id_key" ON "Notificacion"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Tarjeta_id_key" ON "public"."Tarjeta"("id");
+CREATE UNIQUE INDEX "Tarjeta_id_key" ON "Tarjeta"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Movimiento_id_key" ON "public"."Movimiento"("id");
+CREATE UNIQUE INDEX "Movimiento_id_key" ON "Movimiento"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Pago_id_key" ON "public"."Pago"("id");
+CREATE UNIQUE INDEX "Pago_id_key" ON "Pago"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "EntidadOperadora_id_key" ON "public"."EntidadOperadora"("id");
+CREATE UNIQUE INDEX "EntidadOperadora_id_key" ON "EntidadOperadora"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "EntidadOperadora_wallet_address_key" ON "public"."EntidadOperadora"("wallet_address");
+CREATE UNIQUE INDEX "EntidadOperadora_wallet_address_key" ON "EntidadOperadora"("wallet_address");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Empleado_id_key" ON "public"."Empleado"("id");
+CREATE UNIQUE INDEX "Empleado_id_key" ON "Empleado"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Micro_id_key" ON "public"."Micro"("id");
+CREATE UNIQUE INDEX "Micro_id_key" ON "Micro"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Tracking_id_key" ON "public"."Tracking"("id");
+CREATE UNIQUE INDEX "Tracking_id_key" ON "Tracking"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "EntidadPago_id_key" ON "public"."EntidadPago"("id");
+CREATE UNIQUE INDEX "EntidadPago_id_key" ON "EntidadPago"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Parada_id_key" ON "public"."Parada"("id");
+CREATE UNIQUE INDEX "Parada_id_key" ON "Parada"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Ruta_id_key" ON "public"."Ruta"("id");
+CREATE UNIQUE INDEX "Ruta_id_key" ON "Ruta"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "RetiroEntidad_id_key" ON "public"."RetiroEntidad"("id");
+CREATE UNIQUE INDEX "RetiroEntidad_id_key" ON "RetiroEntidad"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TransaccionBlockchain_id_key" ON "public"."TransaccionBlockchain"("id");
+CREATE UNIQUE INDEX "TransaccionBlockchain_id_key" ON "TransaccionBlockchain"("id");
 
 -- AddForeignKey
-ALTER TABLE "public"."Cliente" ADD CONSTRAINT "Cliente_id_fkey" FOREIGN KEY ("id") REFERENCES "public"."Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Cliente" ADD CONSTRAINT "Cliente_id_fkey" FOREIGN KEY ("id") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Cliente" ADD CONSTRAINT "Cliente_id_divisa_fkey" FOREIGN KEY ("id_divisa") REFERENCES "public"."Divisa"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Cliente" ADD CONSTRAINT "Cliente_id_divisa_fkey" FOREIGN KEY ("id_divisa") REFERENCES "Divisa"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Registro" ADD CONSTRAINT "Registro_id_cliente_fkey" FOREIGN KEY ("id_cliente") REFERENCES "public"."Cliente"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Registro" ADD CONSTRAINT "Registro_id_cliente_fkey" FOREIGN KEY ("id_cliente") REFERENCES "Cliente"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Notificacion" ADD CONSTRAINT "Notificacion_id_cliente_fkey" FOREIGN KEY ("id_cliente") REFERENCES "public"."Cliente"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Notificacion" ADD CONSTRAINT "Notificacion_id_cliente_fkey" FOREIGN KEY ("id_cliente") REFERENCES "Cliente"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Tarjeta" ADD CONSTRAINT "Tarjeta_id_cliente_fkey" FOREIGN KEY ("id_cliente") REFERENCES "public"."Cliente"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Tarjeta" ADD CONSTRAINT "Tarjeta_id_cliente_fkey" FOREIGN KEY ("id_cliente") REFERENCES "Cliente"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Movimiento" ADD CONSTRAINT "Movimiento_id_tarjeta_fkey" FOREIGN KEY ("id_tarjeta") REFERENCES "public"."Tarjeta"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Movimiento" ADD CONSTRAINT "Movimiento_id_tarjeta_fkey" FOREIGN KEY ("id_tarjeta") REFERENCES "Tarjeta"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Pago" ADD CONSTRAINT "Pago_id_tarjeta_fkey" FOREIGN KEY ("id_tarjeta") REFERENCES "public"."Tarjeta"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Pago" ADD CONSTRAINT "Pago_id_tarjeta_fkey" FOREIGN KEY ("id_tarjeta") REFERENCES "Tarjeta"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Pago" ADD CONSTRAINT "Pago_id_micro_fkey" FOREIGN KEY ("id_micro") REFERENCES "public"."Micro"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Pago" ADD CONSTRAINT "Pago_id_micro_fkey" FOREIGN KEY ("id_micro") REFERENCES "Micro"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."EntidadOperadora" ADD CONSTRAINT "EntidadOperadora_id_divisa_fkey" FOREIGN KEY ("id_divisa") REFERENCES "public"."Divisa"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "EntidadOperadora" ADD CONSTRAINT "EntidadOperadora_id_divisa_fkey" FOREIGN KEY ("id_divisa") REFERENCES "Divisa"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Empleado" ADD CONSTRAINT "Empleado_id_fkey" FOREIGN KEY ("id") REFERENCES "public"."Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Empleado" ADD CONSTRAINT "Empleado_id_fkey" FOREIGN KEY ("id") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Empleado" ADD CONSTRAINT "Empleado_id_entidad_fkey" FOREIGN KEY ("id_entidad") REFERENCES "public"."EntidadOperadora"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Empleado" ADD CONSTRAINT "Empleado_id_entidad_fkey" FOREIGN KEY ("id_entidad") REFERENCES "EntidadOperadora"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Micro" ADD CONSTRAINT "Micro_id_entidad_fkey" FOREIGN KEY ("id_entidad") REFERENCES "public"."EntidadOperadora"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Micro" ADD CONSTRAINT "Micro_id_entidad_fkey" FOREIGN KEY ("id_entidad") REFERENCES "EntidadOperadora"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Micro" ADD CONSTRAINT "Micro_id_ruta_fkey" FOREIGN KEY ("id_ruta") REFERENCES "public"."Ruta"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Micro" ADD CONSTRAINT "Micro_id_ruta_fkey" FOREIGN KEY ("id_ruta") REFERENCES "Ruta"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Micro" ADD CONSTRAINT "Micro_id_empleado_fkey" FOREIGN KEY ("id_empleado") REFERENCES "public"."Empleado"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Micro" ADD CONSTRAINT "Micro_id_empleado_fkey" FOREIGN KEY ("id_empleado") REFERENCES "Empleado"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Tracking" ADD CONSTRAINT "Tracking_id_micro_fkey" FOREIGN KEY ("id_micro") REFERENCES "public"."Micro"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Tracking" ADD CONSTRAINT "Tracking_id_micro_fkey" FOREIGN KEY ("id_micro") REFERENCES "Micro"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."EntidadPago" ADD CONSTRAINT "EntidadPago_id_pago_fkey" FOREIGN KEY ("id_pago") REFERENCES "public"."Pago"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "EntidadPago" ADD CONSTRAINT "EntidadPago_id_pago_fkey" FOREIGN KEY ("id_pago") REFERENCES "Pago"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."EntidadPago" ADD CONSTRAINT "EntidadPago_id_entidad_fkey" FOREIGN KEY ("id_entidad") REFERENCES "public"."EntidadOperadora"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "EntidadPago" ADD CONSTRAINT "EntidadPago_id_entidad_fkey" FOREIGN KEY ("id_entidad") REFERENCES "EntidadOperadora"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Parada" ADD CONSTRAINT "Parada_id_ruta_fkey" FOREIGN KEY ("id_ruta") REFERENCES "public"."Ruta"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Parada" ADD CONSTRAINT "Parada_id_ruta_fkey" FOREIGN KEY ("id_ruta") REFERENCES "Ruta"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Ruta" ADD CONSTRAINT "Ruta_id_entidad_fkey" FOREIGN KEY ("id_entidad") REFERENCES "public"."EntidadOperadora"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Ruta" ADD CONSTRAINT "Ruta_id_entidad_fkey" FOREIGN KEY ("id_entidad") REFERENCES "EntidadOperadora"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."RetiroEntidad" ADD CONSTRAINT "RetiroEntidad_id_entidad_fkey" FOREIGN KEY ("id_entidad") REFERENCES "public"."EntidadOperadora"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "RetiroEntidad" ADD CONSTRAINT "RetiroEntidad_id_entidad_fkey" FOREIGN KEY ("id_entidad") REFERENCES "EntidadOperadora"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."TransaccionBlockchain" ADD CONSTRAINT "TransaccionBlockchain_id_movimiento_fkey" FOREIGN KEY ("id_movimiento") REFERENCES "public"."Movimiento"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "TransaccionBlockchain" ADD CONSTRAINT "TransaccionBlockchain_id_movimiento_fkey" FOREIGN KEY ("id_movimiento") REFERENCES "Movimiento"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."TransaccionBlockchain" ADD CONSTRAINT "TransaccionBlockchain_id_retiro_entidad_fkey" FOREIGN KEY ("id_retiro_entidad") REFERENCES "public"."RetiroEntidad"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "TransaccionBlockchain" ADD CONSTRAINT "TransaccionBlockchain_id_retiro_entidad_fkey" FOREIGN KEY ("id_retiro_entidad") REFERENCES "RetiroEntidad"("id") ON DELETE SET NULL ON UPDATE CASCADE;
