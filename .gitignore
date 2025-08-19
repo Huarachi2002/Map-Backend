@@ -4,10 +4,6 @@
 /build
 /uploads
 
-#prisma
-/prisma/migrations
-
-
 #postgres
 /postgres_data
 
